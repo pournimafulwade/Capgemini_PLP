@@ -52,7 +52,7 @@ public class UserDAOImple implements UserDAO {
 		}
 		entityManager.close();
 		return isAdded;
-	}//end of the register()
+	}//end of the userRegister()
 
 	@Override
 	public List<HotelBean> getAllHotel() {
@@ -70,7 +70,7 @@ public class UserDAOImple implements UserDAO {
 
 		return hotelList;
 
-	}
+	}//end of the getAllHotel()
 
 	@Override
 	public HotelBean getHotel(String hotelName) {
@@ -89,6 +89,6 @@ public class UserDAOImple implements UserDAO {
 		manager.close();
 		entityManagerFactory.close();
         return hotelBean;
-	}
+	}//end of the  getHotel()
 
 }//end of the userDAOImple class

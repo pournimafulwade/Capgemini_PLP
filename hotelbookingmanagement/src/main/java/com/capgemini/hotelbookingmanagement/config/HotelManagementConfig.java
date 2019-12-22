@@ -14,4 +14,4 @@ public class HotelManagementConfig {
 		return factoryBean;
 	}//end of the getEMF()
 
-}
+}//end of the HotelManagementConfig class

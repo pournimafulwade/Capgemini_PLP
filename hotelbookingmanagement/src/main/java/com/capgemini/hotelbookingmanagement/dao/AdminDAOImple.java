@@ -33,7 +33,7 @@ public class AdminDAOImple implements AdminDAO {
 		}
 		entityManager.close();
 		return isAdded;
-	}
+	}//end of the addHotel()
 
 	@Override
 	public boolean removeHotel(int hotelId) {
@@ -55,7 +55,7 @@ public class AdminDAOImple implements AdminDAO {
 
 		entityManager.close();
 		return isDeleted;
-	}
+	}//end of the removeHotel()
 
 	@Override
 	public boolean updateHotel(HotelBean hotelBean) {
@@ -89,7 +89,7 @@ public class AdminDAOImple implements AdminDAO {
 			entityManager.close();
 		}
 		return isUpdated;
-	}
+	}//end of the updateHotel()
 
 	@Override
 	public List<HotelBean> getHotelList() {
@@ -105,7 +105,7 @@ public class AdminDAOImple implements AdminDAO {
 			e.printStackTrace();
 		}
 		return hotelsList;
-	}
+	}//end of the getHotelList()
 
 	@Override
 	public boolean addRoom(RoomBean roomBean) {
@@ -124,7 +124,7 @@ public class AdminDAOImple implements AdminDAO {
 		entityManager.close();
 
 		return isAdded;
-	}
+	}//end of theaddRoom()
 
 	@Override
 	public boolean deleteRoom(int roomId) {
@@ -145,7 +145,7 @@ public class AdminDAOImple implements AdminDAO {
 		}
 		entityManager.close();
 		return isDeleted;
-	}
+	}//end of the deleteRoom()
 
 	@Override
 	public boolean updateRoom(RoomBean roomBean) {
@@ -177,7 +177,7 @@ public class AdminDAOImple implements AdminDAO {
 		}
 		manager.close();
 		return isUpdate;
-	}
+	}//end of the updateRoom()
 	
 	@Override
 	public List<RoomBean> getRoom(String hotelName) {
@@ -213,6 +213,6 @@ public class AdminDAOImple implements AdminDAO {
 				return roomList;
 			}
 		return null;
-	}
+	}//end of the getRoom()
 
 }//end of the AdminDAOImple class
