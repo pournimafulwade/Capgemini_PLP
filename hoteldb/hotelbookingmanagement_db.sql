@@ -24,15 +24,24 @@ CREATE TABLE `booking_info` (
   `bookingId` int(11) NOT NULL AUTO_INCREMENT,
   `roomId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
-  `amount` double(6,2) DEFAULT NULL,
-  `paymentStatus` varchar(100) DEFAULT NULL,
-  `modeOfPayment` varchar(100) DEFAULT NULL,
+  `roomRent` double(6,2) DEFAULT NULL,
+  `paymentStatus` varchar(11) DEFAULT NULL,
+  `modeOfPayment` varchar(11) DEFAULT NULL,
   `checkinDate` date DEFAULT NULL,
   `checkoutDate` date DEFAULT NULL,
+  `totalDays` int(10) DEFAULT NULL,
+  `hotelId` int(10) DEFAULT NULL,
+  `userName` varchar(20) DEFAULT NULL,
+  `hotelName` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`bookingId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `booking_info` */
+
+insert  into `booking_info`(`bookingId`,`roomId`,`userId`,`roomRent`,`paymentStatus`,`modeOfPayment`,`checkinDate`,`checkoutDate`,`totalDays`,`hotelId`,`userName`,`hotelName`) values 
+(1,1,2,1999.00,'success','cash','2019-12-23','2019-12-30',8,2,'kartik tyagi',NULL),
+(2,2,3,2999.90,'success','cash','2019-12-12','2019-12-25',13,2,'Shubham Sutar',NULL),
+(3,2,2,1999.00,NULL,NULL,NULL,NULL,0,0,NULL,'Sahara Hotel');
 
 /*Table structure for table `hotel` */
 
@@ -43,15 +52,18 @@ CREATE TABLE `hotel` (
   `hotelName` varchar(100) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`hotelId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `hotel` */
 
 insert  into `hotel`(`hotelId`,`hotelName`,`location`) values 
 (1,'qwerty','karnataka'),
 (2,'Bunt\'s Biryani Palace','SitaCircle karnataka'),
-(3,'Sahara Hotel','Marine Drive, Mumbai'),
-(4,'Taaj Hotel','Mumbai');
+(3,'Sahara Hotel','Mumbai'),
+(4,'Taaj Hotel','Mumbai'),
+(5,'5 Star','Mumbai'),
+(6,'Abc','Bangalore'),
+(7,'XYZ','Bangalore');
 
 /*Table structure for table `room_info` */
 
@@ -65,13 +77,15 @@ CREATE TABLE `room_info` (
   `roomStatus` varchar(20) DEFAULT NULL,
   `hotelId` int(11) DEFAULT NULL,
   PRIMARY KEY (`roomId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `room_info` */
 
 insert  into `room_info`(`roomId`,`roomRent`,`roomType`,`roomCapacity`,`roomStatus`,`hotelId`) values 
 (1,3999.00,'Non-AC',3,'Available',1),
-(2,1999.00,'AC',3,'Available',1);
+(2,1999.00,'AC',3,'Available',1),
+(3,1999.00,'AC',4,'Available',2),
+(4,2999.00,'AC',3,'Available',2);
 
 /*Table structure for table `user` */
 
@@ -110,13 +124,14 @@ CREATE TABLE `user_registration` (
   `userType` varchar(20) DEFAULT NULL,
   `hotelId` int(20) DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user_registration` */
 
 insert  into `user_registration`(`userId`,`userName`,`userEmail`,`userPassword`,`mobile`,`address`,`nationality`,`userType`,`hotelId`) values 
 (1,'pournima fulwade','pournima@gmail.com','Pournima07','8689929864','Sam atithi Pavathi karnataka ','Indian','Admin',1),
-(2,'kartik tyagi','kartik@gmail.com','Kartik07','7894564121','Andhra palace karnataka ','Indian','User',1);
+(2,'kartik tyagi','kartik@gmail.com','Kartik07','7894564121','Andhra palace karnataka ','Indian','User',1),
+(3,'Shubham Sutar','shubham@gmail.com','shubham10','7895613344','Pune','American','Room Manager',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
