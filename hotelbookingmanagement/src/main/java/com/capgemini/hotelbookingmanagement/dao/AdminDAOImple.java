@@ -1,5 +1,6 @@
 package com.capgemini.hotelbookingmanagement.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,8 +12,10 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
+import com.capgemini.hotelbookingmanagement.beans.UserBean;
 @Repository
 public class AdminDAOImple implements AdminDAO {
 	@PersistenceUnit
@@ -119,12 +122,12 @@ public class AdminDAOImple implements AdminDAO {
 			isAdded = true;
 
 		} catch (Exception e) {
-			System.out.println("User Not added..");
+			e.printStackTrace();
 		}
 		entityManager.close();
 
 		return isAdded;
-	}//end of theaddRoom()
+	}//end of the addRoom()
 
 	@Override
 	public boolean deleteRoom(int roomId) {
@@ -214,5 +217,77 @@ public class AdminDAOImple implements AdminDAO {
 			}
 		return null;
 	}//end of the getRoom()
+
+	@Override
+	public List<UserBean> getAllUser() {
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		String jpql = "from UserBean where userType <> 'Admin'";
+		Query query = manager.createQuery(jpql);
+
+		List<UserBean> userList = null;
+		try {
+			userList = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return userList;
+	}//end of the getAllUser()
+
+	@Override
+	public List<BookingBean> bookingList() {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		String jpql = "from BookingBean";
+		entityTransaction.begin();
+		Query query = entityManager.createQuery(jpql);
+		//query.setParameter("hotelId", hotelId);
+		List<BookingBean> bookingList = null;
+		bookingList = query.getResultList();
+		entityTransaction.commit();
+		return bookingList;
+	}//end of the bookingList()
+
+	@Override
+	public List<BookingBean> guestListOfSpecificHotel(int hotelId) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		String jpql = "from BookingBean where hotelId=: hotelId";
+		entityTransaction.begin();
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("hotelId", hotelId);
+		List<BookingBean> guestList = null;
+		guestList = query.getResultList();
+		entityTransaction.commit();
+		return guestList;
+	}//end of the guestListOfSpecificHotel
+
+	@Override
+	public List<BookingBean> bookingListOnSpecificDate(Date checkinDate) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		String jpql = "from BookingBean where checkinDate=:checkinDate";
+		entityTransaction.begin();
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("checkinDate", checkinDate);
+		List<BookingBean> bookingList = null;
+		bookingList = query.getResultList();
+		entityTransaction.commit();
+		return bookingList;
+	}//end of the bookingListOnSpecificDate()
+
+	@Override
+	public BookingBean viewBookingStatus(String userName) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+ 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+ 		String jpql ="from BookingBean where userName =: userName";
+ 		Query query = entityManager.createQuery(jpql);
+ 		query.setParameter("userName", userName);
+		BookingBean bookingBean = (BookingBean)query.getSingleResult();
+		entityManager.close();
+		return bookingBean;
+	}//end of the viewBookingStatus()
 
 }//end of the AdminDAOImple class

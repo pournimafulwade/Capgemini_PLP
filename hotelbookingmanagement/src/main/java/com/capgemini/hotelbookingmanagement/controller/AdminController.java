@@ -1,37 +1,69 @@
 package com.capgemini.hotelbookingmanagement.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelResponse;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
+import com.capgemini.hotelbookingmanagement.beans.UserBean;
 import com.capgemini.hotelbookingmanagement.service.AdminService;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true" )
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
 public class AdminController {
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		CustomDateEditor editor = new CustomDateEditor(format, true);
+		binder.registerCustomEditor(Date.class, editor);
+	}
+
 	@Autowired
 	private AdminService adminService;
 
+	@GetMapping(path = "/getAllUsers")
+	public HotelResponse getAllUser() {
+		List<UserBean> userList = adminService.getAllUser();
+		HotelResponse hotelResponse = new HotelResponse();
+		if (userList != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Users Data Found........");
+			hotelResponse.setUserList(userList);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("User data not Found........");
+		}
+		return hotelResponse;
+	}// end of the getAllUsers()
+
 	@PostMapping(path = "/addHotel")
 	public HotelResponse addHotel(@RequestBody HotelBean hotelBean) {
-		boolean add = adminService.addHotel(hotelBean);
+		boolean isAdded = adminService.addHotel(hotelBean);
 		// List<HotelBean> hotelList=adminService.addHotel(hotelBean);
 		HotelResponse hotelResponse = new HotelResponse();
-		if (add) {
+		if (isAdded) {
 			hotelResponse.setStatusCode(201);
 			hotelResponse.setMessage("success");
 			hotelResponse.setDescription("Hotel Added successfully...");
+			hotelResponse.setHotelBean1(hotelBean);
 		} else {
 			hotelResponse.setStatusCode(401);
 			hotelResponse.setMessage("Failed");
@@ -92,68 +124,135 @@ public class AdminController {
 	@PutMapping(path = "/addRoom")
 	public HotelResponse addRoom(@RequestBody RoomBean roomBean) {
 		boolean isAdded = adminService.addRoom(roomBean);
-		HotelResponse response = new HotelResponse();
+		HotelResponse hotelResponse = new HotelResponse();
 		if (isAdded) {
-			response.setStatusCode(201);
-			response.setMessage("Success");
-			response.setDescription("Room Added");
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Room Added");
 		} else {
-			response.setStatusCode(401);
-			response.setMessage("Failed");
-			response.setDescription("Room is not Added");
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Room is not Added");
 		}
-		return response;
+		return hotelResponse;
 	}// end of the addRoom()
 
 	@DeleteMapping(path = "/deleteRoom")
 	public HotelResponse deleteRoom(@RequestParam int roomId) {
 		boolean isDeleted = adminService.deleteRoom(roomId);
-		HotelResponse response = new HotelResponse();
+		HotelResponse hotelResponse = new HotelResponse();
 		if (isDeleted) {
-			response.setStatusCode(201);
-			response.setMessage("Success");
-			response.setDescription("Room Delete");
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Room Delete");
 		} else {
-			response.setStatusCode(401);
-			response.setMessage("Failed");
-			response.setDescription("Room is not Deleted");
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Room is not Deleted");
 		}
-		return response;
+		return hotelResponse;
 	}// end of the deleteRoom()
 
 	@PostMapping("/updateRoom")
 	public HotelResponse updateRoom(@RequestBody RoomBean roomBean) {
 		boolean isUpdated = adminService.updateRoom(roomBean);
-		HotelResponse response = new HotelResponse();
+		HotelResponse hotelResponse = new HotelResponse();
 		if (isUpdated) {
-			response.setStatusCode(201);
-			response.setMessage("Success");
-			response.setDescription("Room Updated");
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Room Updated");
 		} else {
-			response.setStatusCode(401);
-			response.setMessage("Failed");
-			response.setDescription("Room is not updated");
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Room is not updated");
 		}
-		return response;
+		return hotelResponse;
 	}// end of the updateRoom()
 
 	@GetMapping(path = "/getRoom")
 	public HotelResponse getRoom(String hotelName) {
 		List<RoomBean> roomList = adminService.getRoom(hotelName);
 
-		HotelResponse response = new HotelResponse();
+		HotelResponse hotelResponse = new HotelResponse();
 		if (roomList != null) {
-
-			response.setStatusCode(201);
-			response.setMessage("Success");
-			response.setDescription("Room details is displayed");
-
-			response.setRoomList(roomList);
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Room details is displayed");
+			hotelResponse.setRoomList(roomList);
 		} else {
-			response.setStatusCode(401);
-			response.setMessage("Failed");
-			response.setDescription("Room of hotel" + hotelName + "Not Found");
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Room of hotel" + hotelName + "Not Found");
 		}
-		return response;
-	}//end of the getRoom()
-}//end of the AdminController class 
+		return hotelResponse;
+	}// end of the getRoom()
+
+	@GetMapping(path = "/bookingList")
+	public HotelResponse bookingListOfSpecificHotel() {
+		List<BookingBean> bookingList = adminService.bookingList();
+		HotelResponse hotelResponse = new HotelResponse();
+		if (bookingList != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Booking details found");
+			hotelResponse.setBookingList(bookingList);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Booking details not found");
+		}
+		return hotelResponse;
+	}// end of the bookingListOfSpecificHotel()
+
+	@GetMapping(path = "/guestListOfSpecificHotel")
+	public HotelResponse guestListOfSpecificHotel(int hotelId) {
+		List<BookingBean> guestList = adminService.guestListOfSpecificHotel(hotelId);
+		HotelResponse hotelResponse = new HotelResponse();
+		if (guestList != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Guest list found");
+			hotelResponse.setBookingList(guestList);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Guest list not found");
+		}
+		return hotelResponse;
+	}// end of the guestListOfSpecificHotel()
+
+	@GetMapping(path = "/bookingListOnSpecificDate")
+	public HotelResponse bookingListOnSpecificDate(@RequestParam("checkinDate/") Date checkinDate) {
+		List<BookingBean> bookingList = adminService.bookingListOnSpecificDate(checkinDate);
+		HotelResponse hotelResponse = new HotelResponse();
+		if (bookingList != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Guest list found");
+			hotelResponse.setBookingList(bookingList);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Guest list not found");
+		}
+		return hotelResponse;
+	}// end of the bookingListOnSpecificDate()
+	
+	@GetMapping(path = "/viewStatus")
+	public HotelResponse viewBookingStatus(String userName) {
+	BookingBean viewBookingStatus = adminService.viewBookingStatus(userName);
+		HotelResponse hotelResponse = new HotelResponse();
+		if (viewBookingStatus != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Booking Status Found...");
+			hotelResponse.setBookingBean(viewBookingStatus);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("Booking Status not found...");
+		}
+		return hotelResponse;
+	}
+
+}// end of the AdminController class

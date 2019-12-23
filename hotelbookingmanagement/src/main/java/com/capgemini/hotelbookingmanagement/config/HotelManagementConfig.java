@@ -6,12 +6,12 @@ import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
 
 @Configuration
 public class HotelManagementConfig {
-	
+
 	@Bean
 	public LocalEntityManagerFactoryBean getEMF() {
 		LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
 		factoryBean.setPersistenceUnitName("hotelmanagementpersistence");
 		return factoryBean;
-	}//end of the getEMF()
+	}// end of the getEMF()
 
-}//end of the HotelManagementConfig class
+}// end of the HotelManagementConfig class
