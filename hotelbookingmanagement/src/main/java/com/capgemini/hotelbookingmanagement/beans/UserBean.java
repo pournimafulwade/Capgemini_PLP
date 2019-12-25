@@ -4,8 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 @Entity
 @Table(name = "user_registration")
@@ -14,18 +18,20 @@ public class UserBean {
 	@Column
 	private int userId;
 	@Column
-//	@Pattern(regexp = "\\w+\\s\\w+")
-	@NotBlank(message = "Name cannot be Empty!!")
+	@Pattern(regexp = "\\w+\\s\\w+")
+	@NotEmpty(message = "first name must not be empty")
+//	@NotBlank(message = "Name cannot be Empty!!")
 	private String userName;
 	@Column
 //	@Pattern(regexp = "\\w+\\@\\w+\\.\\w+")
-	@Email(message = "Email should be valid!!")
+    @NotEmpty(message = "email must not be empty")
+    @Email(message = "email should be a valid email")
 	private String userEmail;
 	@Column
-//	@Pattern(regexp = "[a-z])(?=.*[A-Z]).{4,10}")
+	@Pattern(regexp = "([a-z])(?=.*[A-Z]).{4,10}")
 	private String userPassword;
 	@Column
-//	@Pattern(regexp = "[6-9]{1}[0-9]{9}", message = "mobile number should of 10 digits!!")
+	@Pattern(regexp = "[6-9]{1}[0-9]{9}", message = "mobile number should of 10 digits!!")
 	private String mobile;
 	@Column
 	@NotBlank(message = "Address cannot be Empty!!")

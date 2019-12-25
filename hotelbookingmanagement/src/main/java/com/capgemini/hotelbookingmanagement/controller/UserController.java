@@ -2,6 +2,8 @@ package com.capgemini.hotelbookingmanagement.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,7 @@ public class UserController {
 
 	@GetMapping(path = "/userLogin")
 	@ResponseBody // object is coming into the body of the request
-	public HotelResponse userLogin(@RequestParam String userEmail, @RequestParam String userPassword) {
+	public HotelResponse userLogin(@Valid @RequestParam String userEmail, @RequestParam String userPassword) {
 		UserBean userBean = userService.userLogin(userEmail, userPassword);
 		HotelResponse hotelResponse = new HotelResponse();
 		if (userBean != null) {
@@ -43,7 +45,7 @@ public class UserController {
 
 	@PostMapping(path = "/userRegistration")
 	// @ResponseBody //object is coming into the body of the request
-	public HotelResponse registerUser(@RequestBody UserBean userBean) {
+	public HotelResponse registerUser(@Valid @RequestBody UserBean userBean) {
 		boolean register = userService.userRegister(userBean);
 		HotelResponse hotelResponse = new HotelResponse();
 		if (register) {

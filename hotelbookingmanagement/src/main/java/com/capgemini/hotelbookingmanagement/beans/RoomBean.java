@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "room_info")
@@ -12,12 +13,12 @@ public class RoomBean {
 	@Id
 	private int roomId;
 	@Column
-//	@Pattern(regexp = "\\d+\\.\\d+")
+	@Pattern(regexp = "\\d+\\.\\d+")
 	private double roomRent;
 	@Column
 	private String roomType;
 	@Column
-//	@Pattern(regexp = "\\d{1,4}")
+	@Pattern(regexp = "\\d{1,4}")
 	private int roomCapacity;
 	@Column
 	private String roomStatus;
