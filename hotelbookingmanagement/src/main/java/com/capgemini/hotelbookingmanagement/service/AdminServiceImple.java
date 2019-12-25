@@ -163,4 +163,14 @@ public class AdminServiceImple implements AdminService {
 	public List<UserBean> getAllEmployee() {
 		return adminDAO.getAllEmployee();
 	}
+
+	@Override
+	public int countOfUser(String userType) {
+		try {
+			return adminDAO.countOfUser(userType);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }// end of the AdminServiceImple class

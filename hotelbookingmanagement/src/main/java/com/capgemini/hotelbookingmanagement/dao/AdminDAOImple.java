@@ -236,7 +236,7 @@ public class AdminDAOImple implements AdminDAO {
 
 	@Override
 	public List<BookingBean> bookingList()throws HotelException {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -255,7 +255,7 @@ public class AdminDAOImple implements AdminDAO {
 
 	@Override
 	public List<BookingBean> guestListOfSpecificHotel(int hotelId) throws HotelException{
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -274,7 +274,7 @@ public class AdminDAOImple implements AdminDAO {
 
 	@Override
 	public List<BookingBean> bookingListOnSpecificDate(Date checkinDate) throws HotelException {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -293,7 +293,7 @@ public class AdminDAOImple implements AdminDAO {
 
 	@Override
 	public BookingBean viewBookingStatus(String userName)throws HotelException {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			String jpql ="from BookingBean where userName =: userName";
@@ -309,7 +309,7 @@ public class AdminDAOImple implements AdminDAO {
 
 	@Override
 	public boolean deleteHotelRoom(int hotelId) throws HotelException {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		boolean isDeleted = false;
 	//	List<RoomBeans> list = null;
@@ -328,7 +328,7 @@ public class AdminDAOImple implements AdminDAO {
 		}
 		entityManager.close();
 		return isDeleted;
-	}
+	}//end of the deleteHotelRoom()
 
 	@Override
 	public List<UserBean> getAllEmployee() {
@@ -343,6 +343,28 @@ public class AdminDAOImple implements AdminDAO {
 			e.printStackTrace();
 		}
 		return employeeList;
-	}
+	}//end of the getAllEmployee()
+
+	@Override
+	public int countOfUser(String userType) throws HotelException {
+		int count = 0;
+		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		List<UserBean> userList = null;
+		String jpql = "from UserBean where userType=:userType";
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction.begin();
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("userType", userType);
+		userList = query.getResultList();
+		for(UserBean userBean : userList) {
+			System.out.println("-------------" + userBean.getUserId());
+			count++;
+		}
+		entityTransaction.commit();
+		entityManager.close();
+		return count;
+	}//end of the countOfUser()
 
 }//end of the AdminDAOImple class

@@ -68,7 +68,7 @@ public class UserDAOImple implements UserDAO {
 			hotelList = query.getResultList();
 
 		} catch (Exception e) {
-			throw new HotelException("Unavailable to Show Hotel List"); 	
+			throw new HotelException("Unavailable to Show Hotel List");
 		}
 
 		return hotelList;
@@ -128,7 +128,7 @@ public class UserDAOImple implements UserDAO {
 
 	@Override
 	public List<HotelBean> getHotel(String location) throws HotelException {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -140,7 +140,7 @@ public class UserDAOImple implements UserDAO {
 			list = query.getResultList();
 			entityTransaction.commit();
 			return list;
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new HotelException("Hotel not found in this location..");
 		}
 	}// end of the getHotel()
@@ -197,7 +197,7 @@ public class UserDAOImple implements UserDAO {
 			throw new HotelException("Unavailable to Book ");
 		}
 		return isadd;
-	}//end of the booking()
+	}// end of the booking()
 
 	@Override
 	public boolean booking1(int userId, int roomId, int hotelId) throws HotelException {
@@ -252,18 +252,17 @@ public class UserDAOImple implements UserDAO {
 			transaction.commit();
 			isadd = true;
 		} catch (Exception e) {
-			 new HotelException("Unavailable to Book ");
+			new HotelException("Unavailable to Book ");
 		}
 		return isadd;
-
-	}//end of the booking1()
+	}// end of the booking1()
 
 	@Override
 	public double bill(int userId) throws HotelException {
 		double bill = 0;
 		try {
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			String jpql = "select sum(roomRent) from BookingBean where userId =: userId";
+			String jpql = "select totalDays*(sum(roomRent)) from BookingBean where userId =: userId";
 			Query query = entityManager.createQuery(jpql);
 			query.setParameter("userId", userId);
 			bill = (double) query.getSingleResult();
@@ -271,9 +270,9 @@ public class UserDAOImple implements UserDAO {
 
 		} catch (Exception e) {
 			throw new HotelException("Billing not possible ");
-		}
 
-	}//end of the bill()
+		}
+	}// end of the bill()
 
 //	@Override
 //	public boolean updateUserProfile(String userPassword, String mobile, String address) {

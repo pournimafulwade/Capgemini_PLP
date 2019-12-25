@@ -281,5 +281,22 @@ public class AdminController {
 		}
 		return response;
 	}
+	
+	@GetMapping(path = "/countOfUser")
+	public HotelResponse countOfUser(@RequestParam String userType) {
+		int countOfUser = adminService.countOfUser(userType);
+		HotelResponse hotelResponse = new HotelResponse();
+		if (countOfUser > 0) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("count generated...");
+			hotelResponse.setCount(countOfUser);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("count not found...");
+		}
+		return hotelResponse;
+	}
 
 }// end of the AdminController class

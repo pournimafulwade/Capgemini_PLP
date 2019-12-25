@@ -7,6 +7,7 @@ import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
+import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 
 public interface AdminService {
 
@@ -39,6 +40,9 @@ public interface AdminService {
     public BookingBean viewBookingStatus(String userName);
     
 	public boolean deleteHotelRoom(int hotelId);
+	
+	public int countOfUser(String userType);
+
 
 
 

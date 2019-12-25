@@ -19,6 +19,7 @@ public class HotelResponse {
 	private  List<BookingBean>  bookingList;
 	private BookingBean bookingBean;
 	private double price;
+	private int count;
 
 	// getters and setters
 	public int getStatusCode() {
@@ -114,5 +115,13 @@ public class HotelResponse {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 }// end of the HotelResponse class

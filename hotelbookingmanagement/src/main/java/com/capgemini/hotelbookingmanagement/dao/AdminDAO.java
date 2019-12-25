@@ -39,5 +39,7 @@ public interface AdminDAO {
 	public BookingBean viewBookingStatus(String userName)throws HotelException;
 	
 	public boolean deleteHotelRoom(int hotelId) throws HotelException;
+	
+	public int countOfUser(String userType) throws HotelException;
 
 }// end of the AdminDAO Interface
