@@ -34,72 +34,72 @@ public class HotelbookingmanagementApplicationTests {
 		TestCase.assertNotNull(userService.userLogin("pournima@gmail.com", "Pournima07"));
 	}
 	
-//	@Test
-//	public void testRegisterUser() {
-//		UserBean userBean = new UserBean();
-////		userBean.setUserId(5);
-//		userBean.setUserName("Pragya Tiwari");
-//		userBean.setUserEmail("pragya@gmail.com");
-//		userBean.setUserPassword("Pragya07");
-//		userBean.setAddress("Star pg,karnataka");
-//		userBean.setMobile("8945672316");
-//		userBean.setNationality("Indian");
-//		userBean.setUserType("User");
-//		TestCase.assertEquals(true, userService.userRegister(userBean));
-//	}
-//	
-//	@Test
-//	public void testUpdateUserProfile() {
-//		UserBean userBean = new UserBean();
-//		userBean.setUserId(3);
-//		userBean.setAddress("Jay Ganesh chawl,Mumbai");
-//		userBean.setMobile("78945613127");
-//		userBean.setUserPassword("Abhishek07");
-//		TestCase.assertEquals(true, userService.updateUserProfile(userBean));
-//
-//	}
-//	
-//	@Test
-//	public void testAddHotel() {
-//		HotelBean hotelBean = new HotelBean();
-//		hotelBean.setHotelId(8);
-//		hotelBean.setHotelName("One Squre");
-//		hotelBean.setLocation("Nainital");
-//		TestCase.assertEquals(true, adminService.addHotel(hotelBean));
-//	}
-//	
-//	@Test
-//	public void testUpdateHotel() {
-//		HotelBean hotelBean = new HotelBean();
-//		hotelBean.setHotelId(3);
-//		hotelBean.setHotelName("Oyo");
-//		hotelBean.setLocation("Karnataka");
-//		TestCase.assertEquals(true, adminService.updateHotel(hotelBean));
-//	}
-//	
-//	@Test
-//	public void testAddRoom() {
-//		RoomBean roomBean = new RoomBean();
-//		roomBean.setRoomId(5);
-//		roomBean.setRoomRent(5999.99);
-//		roomBean.setRoomCapacity(4);
-//		roomBean.setRoomStatus("Available");
-//		roomBean.setRoomType("AC");
-//		roomBean.setHotelId(3);
-//		TestCase.assertEquals(true, adminService.addRoom(roomBean));
-//	}
-//	
-//	@Test
-//	public void testUpdateRoom() {
-//		RoomBean roomBean = new RoomBean();
-//		roomBean.setRoomId(1);
-//		roomBean.setRoomRent(2999.50);
-//		roomBean.setRoomStatus("Available");
-//		roomBean.setRoomType("Non-AC");
-//		roomBean.setRoomCapacity(2);
-//		roomBean.setHotelId(1);
-//		TestCase.assertEquals(true, adminService.updateRoom(roomBean));
-//	}
+	@Test
+	public void testRegisterUser() {
+		UserBean userBean = new UserBean();
+//		userBean.setUserId(5);
+		userBean.setUserName("Priti ");
+		userBean.setUserEmail("priti@gmail.com");
+		userBean.setUserPassword("Priti07");
+		userBean.setAddress("Star pg,karnataka");
+		userBean.setMobile("8945672316");
+		userBean.setNationality("Indian");
+		userBean.setUserType("User");
+		TestCase.assertEquals(true, userService.userRegister(userBean));
+	}
+	
+	@Test
+	public void testUpdateUserProfile() {
+		UserBean userBean = new UserBean();
+		userBean.setUserId(3);
+		userBean.setAddress("Jay Ganesh chawl,Mumbai");
+		userBean.setMobile("78945613127");
+		userBean.setUserPassword("Abhishek07");
+		TestCase.assertEquals(true, userService.updateUserProfile(userBean));
+
+	}
+	
+	@Test
+	public void testAddHotel() {
+		HotelBean hotelBean = new HotelBean();
+		hotelBean.setHotelId(8);
+		hotelBean.setHotelName("Horizone");
+		hotelBean.setLocation("Mumbai");
+		TestCase.assertEquals(true, adminService.addHotel(hotelBean));
+	}
+	
+	@Test
+	public void testUpdateHotel() {
+		HotelBean hotelBean = new HotelBean();
+		hotelBean.setHotelId(3);
+		hotelBean.setHotelName("Hotel Paradise");
+		hotelBean.setLocation("Karnataka");
+		TestCase.assertEquals(true, adminService.updateHotel(hotelBean));
+	}
+	
+	@Test
+	public void testAddRoom() {
+		RoomBean roomBean = new RoomBean();
+		roomBean.setRoomId(5);
+		roomBean.setRoomRent(5999.99);
+		roomBean.setRoomCapacity(4);
+		roomBean.setRoomStatus("Available");
+		roomBean.setRoomType("AC");
+		roomBean.setHotelId(3);
+		TestCase.assertEquals(true, adminService.addRoom(roomBean));
+	}
+	
+	@Test
+	public void testUpdateRoom() {
+		RoomBean roomBean = new RoomBean();
+		roomBean.setRoomId(1);
+		roomBean.setRoomRent(2999.50);
+		roomBean.setRoomStatus("Available");
+		roomBean.setRoomType("Non-AC");
+		roomBean.setRoomCapacity(2);
+		roomBean.setHotelId(1);
+		TestCase.assertEquals(true, adminService.updateRoom(roomBean));
+	}
 	
 	@Test
 	public void testDeleteRoom() {
@@ -112,7 +112,7 @@ public class HotelbookingmanagementApplicationTests {
 		BookingBean bookingBean = adminService.viewBookingStatus("kartik tyagi");
 		assertEquals(null, bookingBean);
 	}
-	
+
 	@Test
 	public void testRemoveHotel() {
 		boolean hotelBean = adminService.removeHotel(7);
@@ -123,7 +123,7 @@ public class HotelbookingmanagementApplicationTests {
 		boolean booking = userService.booking(2, 2, 4);
 		assertEquals(true, booking);
 	}
-	
+
 	@Test
 	public void testBooking1() {
 		boolean booking = userService.booking1(3, 2, 3);
@@ -132,7 +132,7 @@ public class HotelbookingmanagementApplicationTests {
 	@Test
 	public void testBill() {
 		double bill = userService.bill(2);
-		assertEquals(0.0, bill);
+		assertEquals(47976.0, bill);
 	}
 
 
