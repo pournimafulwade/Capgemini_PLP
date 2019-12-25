@@ -18,6 +18,8 @@ public interface UserService {
 
 	public boolean updateUserProfile(UserBean userBean);
 	
+//	public boolean updateUserProfile(String userPassword, String mobile, String address);
+	
 	public boolean booking(int userId, int roomId, int hotelId);
 
 	boolean booking1(int userId, int roomId, int hotelId);

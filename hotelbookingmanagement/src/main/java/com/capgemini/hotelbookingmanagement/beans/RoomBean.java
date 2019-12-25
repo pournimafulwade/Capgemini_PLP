@@ -24,6 +24,8 @@ public class RoomBean {
 	@Column
 //	@Pattern(regexp = "\\d{1,10}")
 	private int hotelId;
+	@Column
+	private String imgURL;
 
 	// getters and setters
 	public int getRoomId() {
@@ -72,5 +74,13 @@ public class RoomBean {
 
 	public void setHotelId(int hotelId) {
 		this.hotelId = hotelId;
+	}
+
+	public String getImgURL() {
+		return imgURL;
+	}
+
+	public void setImgURL(String imgURL) {
+		this.imgURL = imgURL;
 	}
 }// end of the RoomBean class

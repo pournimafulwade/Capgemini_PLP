@@ -16,6 +16,7 @@ import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
+import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 
 @Repository
 public class UserDAOImple implements UserDAO {
@@ -23,7 +24,7 @@ public class UserDAOImple implements UserDAO {
 	private EntityManagerFactory entityManagerFactory;
 
 	@Override
-	public UserBean userLogin(String userEmail, String userPassword) {
+	public UserBean userLogin(String userEmail, String userPassword) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		String jpql = "from UserBean where userEmail = :userEmail and userPassword = :userPassword ";
 		Query query = entityManager.createQuery(jpql);
@@ -34,13 +35,13 @@ public class UserDAOImple implements UserDAO {
 		try {
 			userBean = (UserBean) query.getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Enter valid credentials");
 		}
 		return userBean;
 	}// end of the userLogin()
 
 	@Override
-	public boolean userRegister(UserBean userBean) {
+	public boolean userRegister(UserBean userBean) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
 		boolean isAdded = false;
@@ -50,14 +51,14 @@ public class UserDAOImple implements UserDAO {
 			transaction.commit();
 			isAdded = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Unable to Register");
 		}
 		entityManager.close();
 		return isAdded;
 	}// end of the userRegister()
 
 	@Override
-	public List<HotelBean> getAllHotel() {
+	public List<HotelBean> getAllHotel() throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		String jpql = "from HotelBean";
 		Query query = entityManager.createQuery(jpql);
@@ -67,19 +68,19 @@ public class UserDAOImple implements UserDAO {
 			hotelList = query.getResultList();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Unavailable to Show Hotel List"); 	
 		}
 
 		return hotelList;
 
 	}// end of the getAllHotel()
 
-//	@Override
-//	public HotelBean getHotel(String hotelName) {
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
-//		EntityManager manager = entityManagerFactory.createEntityManager();
-//		HotelBean hotelBean = manager.find(HotelBean.class, hotelName);
-//		List<RoomBean> roomBean = null;
+//@Override
+//public HotelBean getHotel(String hotelName) {
+//EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+//EntityManager manager = entityManagerFactory.createEntityManager();
+//HotelBean hotelBean = manager.find(HotelBean.class, hotelName);
+//List<RoomBean> roomBean = null;
 ////		if(HotelBean!=null) {
 ////			int hotelId = HotelBean.getHotelId();
 ////			String jpql = "FROM RoomInfo WHERE hotelId =: hotelId";
@@ -94,7 +95,7 @@ public class UserDAOImple implements UserDAO {
 //	}//end of the  getHotel()
 
 	@Override
-	public boolean updateUserProfile(UserBean userBean) {
+	public boolean updateUserProfile(UserBean userBean) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 		UserBean userBean1 = entityManager.find(UserBean.class, userBean.getUserId());
@@ -119,30 +120,33 @@ public class UserDAOImple implements UserDAO {
 			entityTransaction.commit();
 			isUpdate = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Unable to Update the User Profile");
 		}
 		entityManager.close();
 		return isUpdate;
 	}// end of the updateUserProfile()
 
 	@Override
-	public List<HotelBean> getHotel(String location) {
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory("hotelmanagementpersistence");
+	public List<HotelBean> getHotel(String location) throws HotelException {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-		String jpql = "from HotelBean where location=: location";
-		entityTransaction.begin();
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("location", location);
-		List<HotelBean> list = null;
-		list = query.getResultList();
-		entityTransaction.commit();
-		return list;
+		try {
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			String jpql = "from HotelBeans where location=: location";
+			entityTransaction.begin();
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("location", location);
+			List<HotelBean> list = null;
+			list = query.getResultList();
+			entityTransaction.commit();
+			return list;
+		}catch(Exception e){
+			throw new HotelException("Hotel not found in this location..");
+		}
 	}// end of the getHotel()
 
 	@Override
-	public boolean booking(int userId, int roomId, int hotelId) {
+	public boolean booking(int userId, int roomId, int hotelId) throws HotelException {
 		double roomRent = 0;
 		String hotelName = null;
 		Date checkinDate = null;
@@ -190,13 +194,13 @@ public class UserDAOImple implements UserDAO {
 			transaction.commit();
 			isadd = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Unavailable to Book ");
 		}
 		return isadd;
 	}//end of the booking()
 
 	@Override
-	public boolean booking1(int userId, int roomId, int hotelId) {
+	public boolean booking1(int userId, int roomId, int hotelId) throws HotelException {
 		double roomRent = 0;
 
 		String hotelName = null;
@@ -248,14 +252,14 @@ public class UserDAOImple implements UserDAO {
 			transaction.commit();
 			isadd = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			 new HotelException("Unavailable to Book ");
 		}
 		return isadd;
 
 	}//end of the booking1()
 
 	@Override
-	public double bill(int userId) {
+	public double bill(int userId) throws HotelException {
 		double bill = 0;
 		try {
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -266,10 +270,42 @@ public class UserDAOImple implements UserDAO {
 			return bill;
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
+			throw new HotelException("Billing not possible ");
 		}
 
 	}//end of the bill()
+
+//	@Override
+//	public boolean updateUserProfile(String userPassword, String mobile, String address) {
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//		EntityTransaction entityTransaction = entityManager.getTransaction();
+//		UserBean userBean = new UserBean();
+//		UserBean userBean1 = entityManager.find(UserBean.class, userBean.getUserId());
+//		boolean isUpdate = false;
+//		if (userBean1 != null) {
+//			String userPassword1 = userBean.getUserPassword();
+//			if (userPassword1 != null) {
+//				userBean1.setUserPassword(userPassword1);
+//			}
+//			String address1 = userBean.getAddress();
+//			if (address1 != null) {
+//				userBean1.setAddress(address1);
+//			}
+//			String mobile1 = userBean.getMobile();
+//			if (mobile != null) {
+//				userBean1.setMobile(mobile1);
+//			}
+//		}
+//		try {
+//			entityTransaction.begin();
+//			entityManager.persist(userBean1);
+//			entityTransaction.commit();
+//			isUpdate = true;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		entityManager.close();
+//		return isUpdate;
+//	}
 
 }// end of the userDAOImple class

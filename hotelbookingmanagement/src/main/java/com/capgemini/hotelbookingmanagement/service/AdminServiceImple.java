@@ -10,6 +10,7 @@ import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
+import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 import com.capgemini.hotelbookingmanagement.dao.AdminDAO;
 
 @Service
@@ -19,66 +20,147 @@ public class AdminServiceImple implements AdminService {
 
 	@Override
 	public boolean addHotel(HotelBean hotelBean) {
-		return adminDAO.addHotel(hotelBean);
+		try {
+			return adminDAO.addHotel(hotelBean);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean removeHotel(int hotelId) {
-		return adminDAO.removeHotel(hotelId);
+		try {
+			return adminDAO.removeHotel(hotelId);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean updateHotel(HotelBean hotelBean) {
-		return adminDAO.updateHotel(hotelBean);
+		try {
+			return adminDAO.updateHotel(hotelBean);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public List<HotelBean> getHotelList() {
-		return adminDAO.getHotelList();
+		try {
+			return adminDAO.getHotelList();
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public boolean addRoom(RoomBean roomBean) {
-		return adminDAO.addRoom(roomBean);
+		try {
+			return adminDAO.addRoom(roomBean);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean deleteRoom(int roomId) {
-		return adminDAO.deleteRoom(roomId);
+		try {
+			return adminDAO.deleteRoom(roomId);
+		} catch (HotelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean updateRoom(RoomBean roomBean) {
-		return adminDAO.updateRoom(roomBean);
+		try {
+			return adminDAO.updateRoom(roomBean);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public List<RoomBean> getRoom(String hotelName) {
-		return adminDAO.getRoom(hotelName);
+		try {
+			return adminDAO.getRoom(hotelName);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<UserBean> getAllUser() {
-		return adminDAO.getAllUser();
+		try {
+			return adminDAO.getAllUser();
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<BookingBean> bookingList() {
-		return adminDAO.bookingList();
+		try {
+			return adminDAO.bookingList();
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<BookingBean> guestListOfSpecificHotel(int hotelId) {
-		return adminDAO.guestListOfSpecificHotel(hotelId);
+		try {
+			return adminDAO.guestListOfSpecificHotel(hotelId);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<BookingBean> bookingListOnSpecificDate(Date checkinDate) {
-		return adminDAO.bookingListOnSpecificDate(checkinDate);
+		try {
+			return adminDAO.bookingListOnSpecificDate(checkinDate);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public BookingBean viewBookingStatus(String userName) {
-		return adminDAO.viewBookingStatus(userName);
+		try {
+			return adminDAO.viewBookingStatus(userName);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean deleteHotelRoom(int hotelId) {
+		try {
+			return adminDAO.deleteHotelRoom(hotelId);
+		} catch (HotelException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public List<UserBean> getAllEmployee() {
+		return adminDAO.getAllEmployee();
 	}
 }// end of the AdminServiceImple class

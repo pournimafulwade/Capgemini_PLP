@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "booking_info")
 public class BookingBean {
@@ -24,8 +26,10 @@ public class BookingBean {
 	@Column
 	private String modeOfPayment;
 	@Column
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Date checkinDate;
 	@Column
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Date checkoutDate;
 	@Column
 	private int totalDays;

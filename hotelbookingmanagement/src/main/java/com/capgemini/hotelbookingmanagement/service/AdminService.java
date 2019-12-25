@@ -19,6 +19,8 @@ public interface AdminService {
 	public List<HotelBean> getHotelList();
 
 	public List<UserBean> getAllUser();
+	
+	public List<UserBean> getAllEmployee();
 
 	public boolean addRoom(RoomBean roomBean);
 
@@ -35,6 +37,9 @@ public interface AdminService {
     public List<BookingBean> bookingListOnSpecificDate(Date checkinDate);
     
     public BookingBean viewBookingStatus(String userName);
+    
+	public boolean deleteHotelRoom(int hotelId);
+
 
 
 }

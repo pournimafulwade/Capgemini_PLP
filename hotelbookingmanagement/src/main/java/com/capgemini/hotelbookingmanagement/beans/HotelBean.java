@@ -18,6 +18,8 @@ public class HotelBean {
 	@Column
 	@NotBlank(message = "Hotel Location cannot be Empty!!")
 	private String location;
+	@Column
+	private String imgURL;
 
 	// getters and setters
 	public int getHotelId() {
@@ -42,6 +44,14 @@ public class HotelBean {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getImgURL() {
+		return imgURL;
+	}
+
+	public void setImgURL(String imgURL) {
+		this.imgURL = imgURL;
 	}
 
 	@Override

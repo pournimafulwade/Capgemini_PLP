@@ -1,16 +1,12 @@
 package com.capgemini.hotelbookingmanagement.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +23,6 @@ import com.capgemini.hotelbookingmanagement.service.AdminService;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
 public class AdminController {
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		CustomDateEditor editor = new CustomDateEditor(format, true);
-		binder.registerCustomEditor(Date.class, editor);
-	}
 
 	@Autowired
 	private AdminService adminService;
@@ -53,6 +43,27 @@ public class AdminController {
 		}
 		return hotelResponse;
 	}// end of the getAllUsers()
+	
+	
+	
+	@GetMapping(path = "/getAllEmployee")
+	public HotelResponse getAllEmployee() {
+		List<UserBean> employeeList = adminService.getAllEmployee();
+		HotelResponse hotelResponse = new HotelResponse();
+		if (employeeList != null) {
+			hotelResponse.setStatusCode(201);
+			hotelResponse.setMessage("Success");
+			hotelResponse.setDescription("Users Data Found........");
+			hotelResponse.setUserList(employeeList);
+		} else {
+			hotelResponse.setStatusCode(401);
+			hotelResponse.setMessage("Failed");
+			hotelResponse.setDescription("User data not Found........");
+		}
+		return hotelResponse;
+	}// end of the getAllUsers()
+	
+	
 
 	@PostMapping(path = "/addHotel")
 	public HotelResponse addHotel(@RequestBody HotelBean hotelBean) {
@@ -237,10 +248,10 @@ public class AdminController {
 		}
 		return hotelResponse;
 	}// end of the bookingListOnSpecificDate()
-	
+
 	@GetMapping(path = "/viewStatus")
 	public HotelResponse viewBookingStatus(String userName) {
-	BookingBean viewBookingStatus = adminService.viewBookingStatus(userName);
+		BookingBean viewBookingStatus = adminService.viewBookingStatus(userName);
 		HotelResponse hotelResponse = new HotelResponse();
 		if (viewBookingStatus != null) {
 			hotelResponse.setStatusCode(201);
@@ -253,6 +264,22 @@ public class AdminController {
 			hotelResponse.setDescription("Booking Status not found...");
 		}
 		return hotelResponse;
+	}
+
+	@DeleteMapping(path = "/deleteHotelRoom")
+	public HotelResponse deleteHotelRoom(@RequestParam int hotelId) {
+		boolean isDeleted = adminService.deleteHotelRoom(hotelId);
+		HotelResponse response = new HotelResponse();
+		if (isDeleted) {
+			response.setStatusCode(201);
+			response.setMessage("Success");
+			response.setDescription("Room Delete");
+		} else {
+			response.setStatusCode(401);
+			response.setMessage("Failed");
+			response.setDescription("Room is not Deleted");
+		}
+		return response;
 	}
 
 }// end of the AdminController class

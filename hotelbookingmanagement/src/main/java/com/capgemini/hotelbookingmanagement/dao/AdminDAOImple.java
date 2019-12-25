@@ -16,13 +16,14 @@ import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
+import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 @Repository
 public class AdminDAOImple implements AdminDAO {
 	@PersistenceUnit
 	private EntityManagerFactory entityManagerFactory;
 
 	@Override
-	public boolean addHotel(HotelBean hotelBean) {
+	public boolean addHotel(HotelBean hotelBean) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 		boolean isAdded = false;
@@ -32,14 +33,14 @@ public class AdminDAOImple implements AdminDAO {
 			entityTransaction.commit();
 			isAdded = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("unavailable to add");
 		}
 		entityManager.close();
 		return isAdded;
 	}//end of the addHotel()
 
 	@Override
-	public boolean removeHotel(int hotelId) {
+	public boolean removeHotel(int hotelId) throws HotelException {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		boolean isDeleted = false;
@@ -53,7 +54,7 @@ public class AdminDAOImple implements AdminDAO {
 			isDeleted = true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("No Hotel available to delete");
 		}
 
 		entityManager.close();
@@ -61,7 +62,7 @@ public class AdminDAOImple implements AdminDAO {
 	}//end of the removeHotel()
 
 	@Override
-	public boolean updateHotel(HotelBean hotelBean) {
+	public boolean updateHotel(HotelBean hotelBean) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		HotelBean existingHotelInfo = entityManager.find(HotelBean.class, hotelBean.getHotelId());
 		boolean isUpdated = false;
@@ -87,7 +88,7 @@ public class AdminDAOImple implements AdminDAO {
 				isUpdated = true;
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new HotelException("unavailable to update Hotel Details");
 			}
 			entityManager.close();
 		}
@@ -95,7 +96,7 @@ public class AdminDAOImple implements AdminDAO {
 	}//end of the updateHotel()
 
 	@Override
-	public List<HotelBean> getHotelList() {
+	public List<HotelBean> getHotelList() throws HotelException {
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		String jpql = "from HotelBean";
 		Query query = manager.createQuery(jpql);
@@ -105,13 +106,13 @@ public class AdminDAOImple implements AdminDAO {
 			hotelsList = query.getResultList();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Unavailable to Show Hotel List");
 		}
 		return hotelsList;
 	}//end of the getHotelList()
 
 	@Override
-	public boolean addRoom(RoomBean roomBean) {
+	public boolean addRoom(RoomBean roomBean) throws HotelException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction= entityManager.getTransaction();
 		boolean isAdded = false;
@@ -122,7 +123,7 @@ public class AdminDAOImple implements AdminDAO {
 			isAdded = true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Hotel Already exists..");
 		}
 		entityManager.close();
 
@@ -130,7 +131,7 @@ public class AdminDAOImple implements AdminDAO {
 	}//end of the addRoom()
 
 	@Override
-	public boolean deleteRoom(int roomId) {
+	public boolean deleteRoom(int roomId) throws HotelException {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		boolean isDeleted = false;
@@ -144,14 +145,14 @@ public class AdminDAOImple implements AdminDAO {
 			isDeleted = true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Room cannot be deleted..");
 		}
 		entityManager.close();
 		return isDeleted;
 	}//end of the deleteRoom()
 
 	@Override
-	public boolean updateRoom(RoomBean roomBean) {
+	public boolean updateRoom(RoomBean roomBean) throws HotelException {
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction = manager.getTransaction();
 		RoomBean roomBean1 = manager.find(RoomBean.class, roomBean.getRoomId());
@@ -176,7 +177,7 @@ public class AdminDAOImple implements AdminDAO {
 			entityTransaction.commit();
 			isUpdate = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HotelException("Update not possible..");
 		}
 		manager.close();
 		return isUpdate;
@@ -219,9 +220,9 @@ public class AdminDAOImple implements AdminDAO {
 	}//end of the getRoom()
 
 	@Override
-	public List<UserBean> getAllUser() {
+	public List<UserBean> getAllUser()throws HotelException {
 		EntityManager manager = entityManagerFactory.createEntityManager();
-		String jpql = "from UserBean where userType <> 'Admin'";
+		String jpql = "from UserBean where userType = 'user'";
 		Query query = manager.createQuery(jpql);
 
 		List<UserBean> userList = null;
@@ -234,60 +235,114 @@ public class AdminDAOImple implements AdminDAO {
 	}//end of the getAllUser()
 
 	@Override
-	public List<BookingBean> bookingList() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+	public List<BookingBean> bookingList()throws HotelException {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-		String jpql = "from BookingBean";
-		entityTransaction.begin();
-		Query query = entityManager.createQuery(jpql);
-		//query.setParameter("hotelId", hotelId);
-		List<BookingBean> bookingList = null;
-		bookingList = query.getResultList();
-		entityTransaction.commit();
-		return bookingList;
+		try {
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			String jpql = "from BookingBean";
+			entityTransaction.begin();
+			Query query = entityManager.createQuery(jpql);
+			//query.setParameter("hotelId", hotelId);
+			List<BookingBean> bookingList = null;
+			bookingList = query.getResultList();
+			entityTransaction.commit();
+			return bookingList;
+		}catch(Exception e) {
+			throw new HotelException("Booking list not found..");
+		}
 	}//end of the bookingList()
 
 	@Override
-	public List<BookingBean> guestListOfSpecificHotel(int hotelId) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+	public List<BookingBean> guestListOfSpecificHotel(int hotelId) throws HotelException{
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-		String jpql = "from BookingBean where hotelId=: hotelId";
-		entityTransaction.begin();
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("hotelId", hotelId);
-		List<BookingBean> guestList = null;
-		guestList = query.getResultList();
-		entityTransaction.commit();
-		return guestList;
+		try {
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			String jpql = "from BookingBean where hotelId=: hotelId";
+			entityTransaction.begin();
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("hotelId", hotelId);
+			List<BookingBean> guestList = null;
+			guestList = query.getResultList();
+			entityTransaction.commit();
+			return guestList;
+		}catch(Exception e) {
+			throw new HotelException("There is no booking done for this particular hotel..");
+		}
 	}//end of the guestListOfSpecificHotel
 
 	@Override
-	public List<BookingBean> bookingListOnSpecificDate(Date checkinDate) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
+	public List<BookingBean> bookingListOnSpecificDate(Date checkinDate) throws HotelException {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-		String jpql = "from BookingBean where checkinDate=:checkinDate";
-		entityTransaction.begin();
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("checkinDate", checkinDate);
-		List<BookingBean> bookingList = null;
-		bookingList = query.getResultList();
-		entityTransaction.commit();
-		return bookingList;
+		try {
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			String jpql = "from BookingBean where checkinDate=:checkinDate";
+			entityTransaction.begin();
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("checkinDate", checkinDate);
+			List<BookingBean> bookingList = null;
+			bookingList = query.getResultList();
+			entityTransaction.commit();
+			return bookingList;
+		}catch(Exception e) {
+			throw new HotelException("There is no booking for the given date..");
+		}
 	}//end of the bookingListOnSpecificDate()
 
 	@Override
-	public BookingBean viewBookingStatus(String userName) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelmanagementpersistence");
- 		EntityManager entityManager = entityManagerFactory.createEntityManager();
- 		String jpql ="from BookingBean where userName =: userName";
- 		Query query = entityManager.createQuery(jpql);
- 		query.setParameter("userName", userName);
-		BookingBean bookingBean = (BookingBean)query.getSingleResult();
-		entityManager.close();
-		return bookingBean;
+	public BookingBean viewBookingStatus(String userName)throws HotelException {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		try {
+			String jpql ="from BookingBean where userName =: userName";
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("userName", userName);
+			BookingBean bookingBean = (BookingBean)query.getSingleResult();
+			entityManager.close();
+			return bookingBean;
+		}catch(Exception e) {
+			throw new HotelException("No status found..");
+		}
 	}//end of the viewBookingStatus()
+
+	@Override
+	public boolean deleteHotelRoom(int hotelId) throws HotelException {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hotelPersistenceUnit");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		boolean isDeleted = false;
+	//	List<RoomBeans> list = null;
+	try {
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+			String jpql ="delete from RoomBean where hotelId =: hotelId";
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("hotelId", hotelId);
+			int result = query.executeUpdate();
+			entityTransaction.commit();
+			isDeleted = true;
+
+	} catch (Exception e) {
+			throw new HotelException("Room cannot be deleted..");
+		}
+		entityManager.close();
+		return isDeleted;
+	}
+
+	@Override
+	public List<UserBean> getAllEmployee() {
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		String jpql = "from UserBean where userType ='employee'";
+		Query query = manager.createQuery(jpql);
+
+		List<UserBean> employeeList = null;
+		try {
+			employeeList = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return employeeList;
+	}
 
 }//end of the AdminDAOImple class
