@@ -43,7 +43,4 @@ public interface AdminService {
 	
 	public int countOfUser(String userType);
 
-
-
-
-}
+}//end of the AdminService interface

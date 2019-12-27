@@ -2,29 +2,31 @@ package com.capgemini.hotelbookingmanagement.service;
 
 import java.util.List;
 
+import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
+import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 
 public interface UserService {
 	public UserBean userLogin(String userEmail, String userPassword);
 
 	public boolean userRegister(UserBean userBean);
 
-	List<HotelBean> getAllHotel();
+//	List<HotelBean> getAllHotel();
 
-//	HotelBean getHotel(String hotelName);
-	
-	public List<HotelBean> getHotel(String location);
+//	public List<HotelBean> getHotel(String location);
 
 	public boolean updateUserProfile(UserBean userBean);
-	
-//	public boolean updateUserProfile(String userPassword, String mobile, String address);
-	
-	public boolean booking(int userId, int roomId, int hotelId);
 
-	boolean booking1(int userId, int roomId, int hotelId);
+//	public boolean booking(BookingBean bookingBean);
 
-	public double bill(int userId);
+//	boolean booking1(BookingBean bookingBean);
 
+//	public double bill(int userId);
 
-}
+//	public float countOfDay(String checkinDate,String checkoutDate);
+
+	public int countOfUser(String userType) throws HotelException;
+
+	public List<UserBean> getAllUser() throws HotelException;
+}// end of the UserService interface

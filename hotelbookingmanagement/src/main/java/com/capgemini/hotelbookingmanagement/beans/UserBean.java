@@ -28,7 +28,7 @@ public class UserBean {
     @Email(message = "email should be a valid email")
 	private String userEmail;
 	@Column
-	@Pattern(regexp = "([a-z])(?=.*[A-Z]).{4,10}")
+	@Pattern(regexp = "([Aa-Zz]).{8,16}")
 	private String userPassword;
 	@Column
 	@Pattern(regexp = "[6-9]{1}[0-9]{9}", message = "mobile number should of 10 digits!!")

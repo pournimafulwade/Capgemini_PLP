@@ -1,6 +1,6 @@
 package com.capgemini.hotelbookingmanagement.customexeption;
 
-public class HotelException extends Exception {
+public class HotelException extends RuntimeException {
 	String message;
 	public HotelException(String message) {
 		super();
@@ -9,7 +9,6 @@ public class HotelException extends Exception {
 	
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return super.getMessage();
 	}
-}
+}//end of the class HotelException

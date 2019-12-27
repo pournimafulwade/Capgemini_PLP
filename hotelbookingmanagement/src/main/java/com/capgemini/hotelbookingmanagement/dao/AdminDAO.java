@@ -10,17 +10,17 @@ import com.capgemini.hotelbookingmanagement.beans.UserBean;
 import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
 
 public interface AdminDAO {
-	public boolean addHotel(HotelBean hotelBean)throws HotelException;
 
+	public boolean addHotel(HotelBean hotelBean)throws HotelException;
 	public boolean removeHotel(int hotelId)throws HotelException;
 
 	public boolean updateHotel(HotelBean hotelBean)throws HotelException;
 
 	public List<HotelBean> getHotelList()throws HotelException;
-
+	
 	public List<UserBean> getAllUser()throws HotelException;
 	
-	public List<UserBean> getAllEmployee();
+	public List<UserBean> getAllEmployee() throws HotelException;
 
 	public boolean addRoom(RoomBean roomBean)throws HotelException;
 

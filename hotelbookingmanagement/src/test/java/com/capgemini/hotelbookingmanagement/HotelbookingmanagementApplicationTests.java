@@ -13,6 +13,7 @@ import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.RoomBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
 import com.capgemini.hotelbookingmanagement.service.AdminService;
+import com.capgemini.hotelbookingmanagement.service.BookingService;
 import com.capgemini.hotelbookingmanagement.service.UserService;
 
 import junit.framework.TestCase;
@@ -24,6 +25,8 @@ public class HotelbookingmanagementApplicationTests {
 	private UserService userService;
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private BookingService bookingService;
 
 	@Test
 	public void contextLoads() {
@@ -56,7 +59,6 @@ public class HotelbookingmanagementApplicationTests {
 		userBean.setMobile("78945613127");
 		userBean.setUserPassword("Abhishek07");
 		TestCase.assertEquals(true, userService.updateUserProfile(userBean));
-
 	}
 	
 	@Test
@@ -118,21 +120,21 @@ public class HotelbookingmanagementApplicationTests {
 		boolean hotelBean = adminService.removeHotel(7);
 		assertEquals(true, hotelBean);
 	}
-	@Test
-	public void testBooking() {
-		boolean booking = userService.booking(2, 2, 4);
-		assertEquals(true, booking);
-	}
+//	@Test
+//	public void testBooking() {
+//		boolean booking = userService.booking(bookingBean)
+//		assertEquals(true, booking);
+//	}
 
-	@Test
-	public void testBooking1() {
-		boolean booking = userService.booking1(3, 2, 3);
-		assertEquals(true, booking);
-	}
+//	@Test
+//	public void testBooking1() {
+//		boolean booking = userService.booking1(3, 2, 3);
+//		assertEquals(true, booking);
+	//}
 	@Test
 	public void testBill() {
-		double bill = userService.bill(2);
-		assertEquals(47976.0, bill);
+		double bill = bookingService.bill(2);
+		assertEquals(63968.0, bill);
 	}
 
 

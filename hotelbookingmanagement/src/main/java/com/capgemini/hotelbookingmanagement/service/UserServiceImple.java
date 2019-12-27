@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.hotelbookingmanagement.beans.BookingBean;
 import com.capgemini.hotelbookingmanagement.beans.HotelBean;
 import com.capgemini.hotelbookingmanagement.beans.UserBean;
 import com.capgemini.hotelbookingmanagement.customexeption.HotelException;
@@ -17,91 +18,56 @@ public class UserServiceImple implements UserService {
 
 	@Override
 	public UserBean userLogin(String userEmail, String userPassword) {
-		try {
-			return userDAO.userLogin(userEmail, userPassword);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userDAO.userLogin(userEmail, userPassword);
 	}
 
 	@Override
 	public boolean userRegister(UserBean userBean) {
-		try {
-			return userDAO.userRegister(userBean);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public List<HotelBean> getAllHotel() {
-		try {
-			return userDAO.getAllHotel();
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userDAO.userRegister(userBean);
 	}
 
 //	@Override
-//	public HotelBean getHotel(String hotelName) {
-//		return userDAO.getHotel(hotelName);
+//	public List<HotelBean> getAllHotel() {
+//		return userDAO.getAllHotel();
+//	}
+
+//	@Override
+//	public List<HotelBean> getHotel(String location) {
+//		return userDAO.getHotel(location);
 //	}
 
 	@Override
 	public boolean updateUserProfile(UserBean userBean) {
-		try {
-			return userDAO.updateUserProfile(userBean);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return userDAO.updateUserProfile(userBean);
 	}
 
 	@Override
-	public List<HotelBean> getHotel(String location) {
-		try {
-			return userDAO.getHotel(location);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public int countOfUser(String userType) throws HotelException {
+		return userDAO.countOfUser(userType);
 	}
 
 	@Override
-	public boolean booking(int userId, int roomId, int hotelId) {
-		try {
-			return userDAO.booking(userId, roomId, hotelId);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean booking1(int userId, int roomId, int hotelId) {
-		try {
-			return userDAO.booking1(userId, roomId, hotelId);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public double bill(int userId) {
-		try {
-			return userDAO.bill(userId);
-		} catch (HotelException e) {
-			e.printStackTrace();
-		}
-		return userId;
+	public List<UserBean> getAllUser() throws HotelException {
+		return userDAO.getAllUser();
 	}
 
 //	@Override
-//	public boolean updateUserProfile(String userPassword, String mobile, String address) {
-//		return userDAO.updateUserProfile(userPassword, mobile, address);
+//	public boolean booking(BookingBean bookingBean) {
+//		return userDAO.booking(bookingBean);
+//	}
+
+//	@Override
+//	public boolean booking1(BookingBean bookingBean) {
+//		return userDAO.booking1(bookingBean);
+//	}
+
+//	@Override
+//	public double bill(int userId) {
+//		return userDAO.bill(userId);
+//	}
+
+//	@Override
+//	public float countOfDay(String checkinDate, String checkoutDate) {
+//		return userDAO.countOfDay(checkinDate, checkoutDate);
 //	}
 }// end of the UserServiceImple class

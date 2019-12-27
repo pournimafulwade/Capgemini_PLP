@@ -20,6 +20,7 @@ public class HotelResponse {
 	private BookingBean bookingBean;
 	private double price;
 	private int count;
+	private float daysBetween;
 
 	// getters and setters
 	public int getStatusCode() {
@@ -123,5 +124,13 @@ public class HotelResponse {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public float getDaysBetween() {
+		return daysBetween;
+	}
+
+	public void setDaysBetween(float daysBetween) {
+		this.daysBetween = daysBetween;
 	}
 }// end of the HotelResponse class

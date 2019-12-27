@@ -26,13 +26,22 @@ public class BookingBean {
 	@Column
 	private String modeOfPayment;
 	@Column
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-	private Date checkinDate;
+//	@NotNull(message = ExceptionConstants.INVALID_START_DATE)
+//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
+	private String checkinDate;
 	@Column
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-	private Date checkoutDate;
+//	@JsonFormat(pattern = "yyyy-MM-dd")
+	private String checkoutDate;
 	@Column
 	private int totalDays;
+	public int getTotalDays() {
+		return totalDays;
+	}
+
+	public void setTotalDays(int totalDays) {
+		this.totalDays = totalDays;
+	}
+
 	@Column
 	private int hotelId;
 	@Column
@@ -90,29 +99,26 @@ public class BookingBean {
 		this.modeOfPayment = modeOfPayment;
 	}
 
-	public Date getCheckinDate() {
+	
+
+	public String getCheckinDate() {
 		return checkinDate;
 	}
 
-	public void setCheckinDate(Date checkinDate) {
+	public void setCheckinDate(String checkinDate) {
 		this.checkinDate = checkinDate;
 	}
 
-	public Date getCheckoutDate() {
+	public String getCheckoutDate() {
 		return checkoutDate;
 	}
 
-	public void setCheckoutDate(Date checkoutDate) {
+	public void setCheckoutDate(String checkoutDate) {
 		this.checkoutDate = checkoutDate;
 	}
 
-	public int getTotalDays() {
-		return totalDays;
-	}
+	
 
-	public void setTotalDays(int totalDays) {
-		this.totalDays = totalDays;
-	}
 
 	public int getHotelId() {
 		return hotelId;
